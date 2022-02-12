@@ -9,7 +9,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
@@ -68,5 +70,22 @@ class CustomerRepositoryTest {
 
         //Assert
         assertNotNull(customer, "Customer was not modified :(");
+    }
+
+    @Test
+    @Order(4)
+    void mustDeleteACustomer() {
+        //Arrange
+        Integer idCustomer = 14836554;
+
+        Optional<Customer> customer = customerRepository.findById(idCustomer);
+        assertTrue(customer.isPresent(), "Customer doesn't exists :(");
+
+        //Act
+        customerRepository.delete(customer.get());
+        Optional<Customer> deletedCustomer = customerRepository.findById(idCustomer);
+
+        //Assert
+        assertFalse(deletedCustomer.isPresent(), "Customer was not deleted :(");
     }
 }
