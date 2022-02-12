@@ -2,6 +2,7 @@ package com.vobi.bank.repository;
 
 import com.vobi.bank.entity.Customer;
 import com.vobi.bank.entity.DocumentType;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -9,12 +10,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
+@Slf4j
 class CustomerRepositoryTest {
 
     @Autowired
@@ -87,5 +90,15 @@ class CustomerRepositoryTest {
 
         //Assert
         assertFalse(deletedCustomer.isPresent(), "Customer was not deleted :(");
+    }
+
+    @Test
+    @Order(5)
+    void mustGetAllCustomers() {
+        //Arrange
+        List<Customer> customers = customerRepository.findAll();
+        assertFalse(customers.isEmpty(), "Customers was not retrieved :(");
+
+        customers.forEach(customer -> log.info(String.valueOf(customer)));
     }
 }
