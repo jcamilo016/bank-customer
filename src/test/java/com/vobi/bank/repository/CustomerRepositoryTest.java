@@ -3,6 +3,7 @@ package com.vobi.bank.repository;
 import com.vobi.bank.entity.Customer;
 import com.vobi.bank.entity.DocumentType;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,14 @@ class CustomerRepositoryTest {
     DocumentTypeRepository documentTypeRepository;
 
     @Test
+    @Order(1)
     void mustValidateDependencies() {
         assertNotNull(customerRepository);
         assertNotNull(documentTypeRepository);
     }
 
     @Test
+    @Order(2)
     void mustCreateACustomer() {
         //Arrange
         Integer idDocumentType = 1;
@@ -49,5 +52,21 @@ class CustomerRepositoryTest {
 
         //Assert
         assertNotNull(customer, "Customer was not saved :(");
+    }
+
+    @Test
+    @Order(3)
+    void mustModifyACustomer() {
+        //Arrange
+        Integer idCustomer = 14836554;
+
+        Customer customer = customerRepository.findById(idCustomer).get();
+        customer.setEnable("N");
+
+        //Act
+        Customer savedCustomer = customerRepository.save(customer);
+
+        //Assert
+        assertNotNull(customer, "Customer was not modified :(");
     }
 }
