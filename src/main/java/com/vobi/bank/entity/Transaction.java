@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,6 +21,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transaction implements java.io.Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
