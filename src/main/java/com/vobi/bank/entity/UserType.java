@@ -38,7 +38,7 @@ public class UserType implements java.io.Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userType")
 	@ToString.Exclude
-	private List<Users> userses = new ArrayList<>();
+	private List<User> userses = new ArrayList<>();
 
 	@Override
 	public boolean equals(Object o) {

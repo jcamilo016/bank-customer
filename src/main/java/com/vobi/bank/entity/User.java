@@ -20,7 +20,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Users implements java.io.Serializable {
+public class User implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,7 +32,6 @@ public class Users implements java.io.Serializable {
 	@JoinColumn(name = "usty_id")
 	@ToString.Exclude
 	private UserType userType;
-
 
 	@Column(name = "enable", nullable = false)
 	private String enable;
@@ -50,7 +49,7 @@ public class Users implements java.io.Serializable {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-		Users users = (Users) o;
+		User users = (User) o;
 		return userEmail != null && Objects.equals(userEmail, users.userEmail);
 	}
 

@@ -39,7 +39,7 @@ public class Transaction implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_email")
 	@ToString.Exclude
-	private Users users;
+	private User users;
 
 	@Column(name = "amount", nullable = false)
 	private Double amount;

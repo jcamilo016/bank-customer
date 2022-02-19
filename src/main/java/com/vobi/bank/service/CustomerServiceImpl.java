@@ -77,38 +77,43 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(Customer customer) throws Exception {
-        if (Objects.isNull(customer)) {
-            throw new Exception("The customer entity is null");
+    public void delete(Customer entity) throws Exception {
+        if (entity == null) {
+            throw new Exception("The customer is null");
         }
 
-        if (Objects.isNull(customer.getCustId())) {
-            throw new Exception("The customer entity doesn't have an Id");
+        if (entity.getCustId() == null) {
+            throw new Exception("The customer is null");
         }
 
-/*        findById(customer.getCustId()).ifPresent(foundCustomer -> {
-            if (Objects.nonNull(foundCustomer.getAccounts()) || Objects.nonNull(foundCustomer.getRegisteredAccounts())) {
+        if (!customerRepository.existsById(entity.getCustId())) {
+            throw new Exception("The customer doesn't exist");
+        }
+
+        findById(entity.getCustId()).ifPresent(customer -> {
+            if (customer.getAccounts() != null && !customer.getAccounts().isEmpty()) {
                 throw new RuntimeException("The customer has associated accounts");
             }
-        });*/
 
-        customerRepository.delete(customer);
+            if (customer.getRegisteredAccounts() != null && !customer.getRegisteredAccounts().isEmpty()) {
+                throw new RuntimeException("The customer has associated registered accounts");
+            }
+        });
+
+        customerRepository.deleteById(entity.getCustId());
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteById(Integer customerId) throws Exception {
-        if (Objects.isNull(customerId)) {
-            throw new Exception("Customer Id provided is invalid");
+        if (customerId == null)
+            throw new Exception("The customer id is null");
+
+        if (!customerRepository.existsById(customerId)) {
+            throw new Exception("The customer does not exist");
         }
 
-/*        findById(customerId).ifPresent(foundCustomer -> {
-            if (Objects.nonNull(foundCustomer.getAccounts()) || Objects.nonNull(foundCustomer.getRegisteredAccounts())) {
-                throw new RuntimeException("The customer has associated accounts");
-            }
-        });*/
-
-        customerRepository.deleteById(customerId);
+        delete(customerRepository.findById(customerId).get());
     }
 
     @Override
